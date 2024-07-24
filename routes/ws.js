@@ -39,7 +39,17 @@ route.ws('/web', (ws, req) => {
 // connect with esp32
 route.ws('/mobile', (ws, req) => {
   wsMobile = ws;
+  console.log('mobile connected')
+  wsMobile.send("hello esp32")
+  ws.on('message', function (msg) {
+    console.log(msg);
+    
+  })
 
+  
+  ws.on('close', function (e) {
+      wsMobile = null;
+  })
 })
 
 module.exports = route 
