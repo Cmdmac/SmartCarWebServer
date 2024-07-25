@@ -18,7 +18,9 @@ fs.readFile('xhy.xml', (err, data) => {
             var p = result.svg.g.g.path[i].$;
             if (p['fill-rule']) {
                 // 矩形区域
-                console.log(p);
+                //console.log(p);
+            } else if (p.fill == "none") {
+                console.log(p)
             }
         }
 
