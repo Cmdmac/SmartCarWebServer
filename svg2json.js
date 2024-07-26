@@ -15,6 +15,8 @@ fs.readFile('xhy2.svg', (err, data) => {
         // console.log(v[0].g[0].path);
         // console.log(result.svg.g.g.path);
 
+        let blocks = ['冰箱', '电视柜', "沙发", "鞋柜-厅", "鞋柜", "烧水机", "床头柜", "床", "床头柜", "书柜", "鞋柜"]
+
         let map = {Floors: [], building: {_id: 0, _xLon: 222, Tel: "23", Address: "dasf", Brief: "sdf", Area: 2342.23, FloorsId: "-1, 1,2,3,4,5", 
             Name_en: "", Version: 5, High: 1, FrontAngle: 0.232234, Mall: 1, Time: "", UnderFloors: 1, Type: 6, Adcode: 110105, DefaultFloor: 0, Remark: "sdfdf", _yLat: 22.234, Outline: [], Name: "sdfs", GroudFloors: 6}};
         let floor = {Brief: "sdsd", ImageLayer: {Area: 2234.02}, PubPoint: [], FuncAreas: [], Name_en: "ssdf", Outline: [[[]]], _id: 0, High: 5, Name: "B1"};
@@ -85,6 +87,7 @@ fs.readFile('xhy2.svg', (err, data) => {
                 // console.log(Math.abs(points[0] - points[3]) * Math.abs(points[1] - points[7]));
                 console.log(shop.Center);
                 // calculate area
+                shop.Name = blocks[floor.FuncAreas.length];
                 floor.FuncAreas.push(shop);
             } else if (p.fill == "none" && p['fill-opacity'] != 1 && p.stroke == "rgb(0,0,0)" && p['stroke-opacity'] != 1) {
                 // console.log(p)
