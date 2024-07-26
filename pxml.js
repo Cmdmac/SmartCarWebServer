@@ -72,17 +72,21 @@ fs.readFile('xhy.svg', (err, data) => {
                     "BrandShop": 75973
                   }
                 */
-                let points = p.d.replaceAll('M', '').replaceAll('L', '').replaceAll('Z', '').replaceAll(/\s+/g,' ').trim().split(' ').map(item => parseFloat(item));
+                let points = p.d.replaceAll('M', '').replaceAll('L', '').replaceAll('C', '').replaceAll('Z', '').replaceAll(/\s+/g,' ').trim().split(' ').map(item => parseFloat(item));
                 let shop = {_id: Date.now(), Name: "block", name: "block", Name_en: "block", Area: 0, BrandShop: 70000, Brief: "", Category2: 102, ShoppNo: "", Brand: 1000, Type: 6001, Outline: points, dianping_id: 0};
+                shop.Area = Math.abs(points[1] - points[3]) * Math.abs(points[0] - points[7]);
+                console.log(points);
+                console.log(Math.abs(points[0] - points[3]) * Math.abs(points[1] - points[7]));
                 // console.log(shop);
+                // calculate area
             } else if (p.fill == "none" && p['fill-opacity'] != 1) {
                 // console.log(p)
-                let points = p.d.replaceAll('M', '').replaceAll('L', '').replaceAll('Z', '').replaceAll(/\s+/g,' ').trim().split(' ');
+                let points = p.d.replaceAll('M', '').replaceAll('L', '').replaceAll('C', '').replaceAll('Z', '').replaceAll(/\s+/g,' ').trim().split(' ');
                 // console.log(points);
                 points.forEach(item =>  floor.Outline.push(parseFloat(item)));
             }
         }
-
-        console.log(floor);
+        map.building.Outline = floor.Outline;
+        // console.log(map);
     });
 });
