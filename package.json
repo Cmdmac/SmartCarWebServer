@@ -12,6 +12,7 @@
     "express-ws": "^5.0.2",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
+    "openai": "^4.53.2",
     "pug": "2.0.0-beta11",
     "xml2js": "^0.6.2"
   }

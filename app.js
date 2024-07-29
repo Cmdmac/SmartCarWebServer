@@ -9,6 +9,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var locateRouter = require('./routes/locate');
 
+
 var app = express();
 const expressWs = require('express-ws')(app);
 
@@ -29,6 +30,10 @@ app.use('/locate', locateRouter);
 // init websocket
 const Router = require('./routes/ws');
 app.use('/', Router)
+
+var llmRouter = require('./routes/llm');
+app.use('/llm', llmRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
