@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var locateByRSSI = require('../locateByRSSI');
+var locateByRSSI = require('../lib/locateByRSSI');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
