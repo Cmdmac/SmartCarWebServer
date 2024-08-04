@@ -29,8 +29,8 @@ loadMap2Grid('./indoorMap.json').then((data) => {
 
 	let pathFindingManager = new PathFinding();
 	pathFindingManager.setWalkable(0); // or this.pathFindingManager.setWalkable(0, 10, 11); 
-	pathFindingManager.setEnd({row: 72, col: 92});
-	pathFindingManager.setStart({row: 10, col: 28});
+	pathFindingManager.setEnd({row: 36, col: 30});
+	pathFindingManager.setStart({row: 2, col: 3});
 	let bestPath = pathFindingManager.find(data);
 	console.log(bestPath);
 	for(let i = 0; i < bestPath.length; i++) {
