@@ -21,11 +21,11 @@
 // const c = a + b * 2;
 // console.log(c);
 
-const {loadMap2Grid, point2Grid} = require('./lib/map2grid');
+const {loadMap, point2Grid} = require('./lib/json2map');
 const PathFinding  = require('astarjs').PathFinding;
 
 
-loadMap2Grid('./indoorMap.json').then((data) => {
+loadMap('./indoorMap.json').then((data) => {
 
 	let pathFindingManager = new PathFinding();
 	pathFindingManager.setWalkable(0); // or this.pathFindingManager.setWalkable(0, 10, 11); 
