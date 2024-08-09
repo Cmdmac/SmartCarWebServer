@@ -5,9 +5,10 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var locateRouter = require('./routes/locate');
+let indexRouter = require('./routes/index');
+let usersRouter = require('./routes/users');
+let locateRouter = require('./routes/locate');
+let searchRouter = require('./routes/search');
 
 
 var app = express();
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/locate', locateRouter);
+app.use('/search', searchRouter);
 
 // init websocket
 const Router = require('./routes/ws');
