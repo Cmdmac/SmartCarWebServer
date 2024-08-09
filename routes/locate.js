@@ -1,6 +1,15 @@
-var express = require('express');
-var router = express.Router();
-var locateByRSSI = require('../lib/locateByRSSI');
+const express = require('express');
+const router = express.Router();
+const locateByRSSI = require('../lib/locateByRSSI');
+const {loadBeacons} = require('./lib/json2map');
+const {PathFinding} = require("astarjs");
+
+const beacons = [];
+loadBeacons('./indoorMap.json').then((data) => {
+    beacons.concat(data);
+}).catch((err) => {
+
+});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
