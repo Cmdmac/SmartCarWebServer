@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const {loadMap, point2Grid} = require('../lib/json2map');
+const json2map = require('../lib/json2map');
 const PathFinding  = require('astarjs').PathFinding;
 
 let map = {};
-loadMap('./indoorMap.json').then((data) => {
+json2map.loadMap('./indoorMap.json').then((data) => {
     map = data;
 	// console.log(data);
     // for(let i = 0; i < bestPath.length; i++) {
@@ -32,14 +32,18 @@ router.get('/', function(req, res, next) {
     let endY = parseFloat(req.query.endY);
     let pathFindingManager = new PathFinding();
     pathFindingManager.setWalkable(0); // or this.pathFindingManager.setWalkable(0, 10, 11);
-    let startPoint = point2Grid(startX, startY);
-    let endPoint = point2Grid(endX, endY);
+    let startPoint = json2map.point2Grid(startX, startY);
+    let endPoint = json2map.point2Grid(endX, endY);
     console.log(startPoint);
     console.log(endPoint);
     pathFindingManager.setStart({row: startPoint.x, col: startPoint.y});
     pathFindingManager.setEnd({row: endPoint.x, col: endPoint.y});
     let bestPath = pathFindingManager.find(map).map(item=>{
-        return [item.row, item.col];
+        // console.log(item);
+        let p = json2map.grid2point(item.row, item.col);
+        // console.log(p);
+        return [p.x, p.y];
+        // return [item.row, item.col];
     })
     console.log(bestPath);
     let respond = {code: 200, data: bestPath};
