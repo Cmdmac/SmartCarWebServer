@@ -39,10 +39,13 @@ router.get('/', function(req, res, next) {
     pathFindingManager.setStart({row: startPoint.x, col: startPoint.y});
     pathFindingManager.setEnd({row: endPoint.x, col: endPoint.y});
     let bestPath = pathFindingManager.find(map).map(item=>{
-        return {x: item.row, y: item.col};
+        return [item.row, item.col];
     })
     console.log(bestPath);
     let respond = {code: 200, data: bestPath};
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.send(respond);
 });
 module.exports = router;
