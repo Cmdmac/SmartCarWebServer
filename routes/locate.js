@@ -15,7 +15,6 @@ loadBeacons('./indoorMap.json').then((data) => {
 });
 
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
     const mac1 = req.query.mac1;
     const mac2 = req.query.mac2;
@@ -27,7 +26,7 @@ router.get('/', function(req, res, next) {
     // console.log(beacon2);
     // console.log(beacon3);
     let location = locateByRSSI(beacon1, beacon2, beacon3, req.query.rssi1, req.query.rssi2, req.query.rssi3);
-    console.log(location);
+    // console.log(location);
     if (location) {
         res.send({code: 200, msg: 'success', location: location});
     } else {

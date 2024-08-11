@@ -29,6 +29,11 @@
 // });
 
 const {loadMap} = require("./lib/json2map");
+
+const svg2json = require("./lib/svg2json");
+
+// svg2json.svg2json('./xhy.svg', 'indoorMap.json');
+
 loadMap('./indoorMap.json').then((data) => {
     // console.log(data);
     // for(let i = 0; i < bestPath.length; i++) {

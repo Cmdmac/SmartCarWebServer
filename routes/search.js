@@ -25,6 +25,44 @@ json2map.loadMap('./indoorMap.json').then((data) => {
     console.log(err);
 });
 
+function grid2String(startPos, endPos, bestPath) {
+    // console.log(map);
+    console.log("from=" + JSON.stringify(startPos) + ",end=" + JSON.stringify(endPos));
+
+    console.log(bestPath);
+   
+    // map[startPos.x][startPos.y] = 3;
+    // map[endPos.x][endPos.y] = 4;
+    for(let i = 0; i < map.length; i++) {
+        let s = "[";
+        for (let j = 0; j < map[i].length; j++) {
+            if (i == startPos.x && j == startPos.y) {
+                s += '3';
+            } else if (i == endPos.x && j == endPos.y) {
+                s += '4';
+            } else {
+                let find = false;
+                for(let k = 0; k < bestPath.length; k++) {
+                    let p = bestPath[k];
+                    if (p.row == i && p.col == j) {
+                        s += '2';
+                        find = true;
+                        break;
+                    }
+                }
+                if (find == false) {
+                    s += (map[i][j] === 0? ' ': map[i][j]);
+                }
+                
+            }
+            s += ",";
+           
+        }
+        s += "]";
+        console.log(s);
+    }
+}
+
 router.get('/', function(req, res, next) {
     let startX = parseFloat(req.query.startX);
     let startY = parseFloat(req.query.startY);
@@ -38,15 +76,16 @@ router.get('/', function(req, res, next) {
     console.log(endPoint);
     pathFindingManager.setStart({row: startPoint.x, col: startPoint.y});
     pathFindingManager.setEnd({row: endPoint.x, col: endPoint.y});
-    let bestPath = pathFindingManager.find(map).map(item=>{
+    let bestPath = pathFindingManager.find(map);
+    grid2String(startPoint, endPoint, bestPath);
+    let naviPath = bestPath.map(item=>{
         // console.log(item);
         let p = json2map.grid2point(item.row, item.col);
         // console.log(p);
         return [p.x, p.y];
         // return [item.row, item.col];
     })
-    console.log(bestPath);
-    let respond = {code: 200, data: bestPath};
+    let respond = {code: 200, data: naviPath};
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
