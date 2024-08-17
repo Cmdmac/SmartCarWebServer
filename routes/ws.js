@@ -7,12 +7,13 @@ const route = express.Router() // 实例化路由对象
 var wsWeb = null;
 var wsMobile = null;
 
+const httpwsbridge = require('../lib/httpwsbridge');
 //connect with browser
 route.ws('/web', (ws, req) => {
 
   // console.log("ws from web req=" + JSON.stringify(req));
   wsWeb = ws;
-
+  httpwsbridge.updateWebClient(ws);
   ws.on('message', function (msg) {
     console.log(msg);
     // console.log(msg.command);
@@ -39,6 +40,7 @@ route.ws('/web', (ws, req) => {
 // connect with esp32
 route.ws('/mobile', (ws, req) => {
   wsMobile = ws;
+  httpwsbridge.updateMobileClient(ws);
   console.log('mobile connected')
   wsMobile.send("hello esp32")
   ws.on('message', function (msg) {

@@ -3,6 +3,7 @@ const router = express.Router();
 const locateByRSSI = require('../lib/locateByRSSI');
 const {loadBeacons} = require('../lib/json2map');
 const {PathFinding} = require("astarjs");
+const httpwsbridge = require('../lib/httpwsbridge');
 
 const beacons = new Map();
 loadBeacons('./indoorMap.json').then((data) => {
@@ -33,7 +34,9 @@ router.get('/', function(req, res, next) {
     // console.log(location);
     if (location) {
         globalLocation = location;
+        httpwsbridge.sendMsgToWeb({type: 100, data: [location.x, location.y]});
         res.send({code: 200, msg: 'success', location: location});
+
     } else {
         res.send({code: 400, msg: 'error', location: location});
     }
