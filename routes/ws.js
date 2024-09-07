@@ -66,14 +66,21 @@ route.ws('/mobile/camera/control',  (ws, req) => {
 route.ws('/mobile/camera/stream',  (ws, req) => {
   console.log(req.url);
   // httpwsbridge.addMobileClient(ws);
+  // console.log(req);
+  if (req.query.client === 'web') {
+    httpwsbridge.addStreamWebClients(ws);
+  }
+  
   ws.on('message', function (msg) {
     console.log(msg.length);
-    
+    if (req.query.client === 'esp32cam') {
+      // httpwsbridge.sendMsgToStreamWebClients(ws);
+    }
   })
 
   
   ws.on('close', function (e) {
-      // httpwsbridge.removeMobileClient(ws);
+      httpwsbridge.removeMobileClient(ws);
   })
 })
 module.exports = route 
