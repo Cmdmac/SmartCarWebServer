@@ -4,7 +4,7 @@ const route = express.Router() // 实例化路由对象
 // const getNowTime = require('./utils/index')
 
 const httpwsbridge = require('../lib/httpwsbridge');
-//connect with browser
+// connect with browser
 route.ws('/web', (ws, req) => {
   console.log(req.url);
   // console.log("ws from web req=" + JSON.stringify(req));
@@ -23,7 +23,6 @@ route.ws('/web', (ws, req) => {
       console.log('trasfer msg to mobile msg=' + msg);
     }
   })
-
   
   ws.on('close', function (e) {
       httpwsbridge.removeWebClient(ws);
