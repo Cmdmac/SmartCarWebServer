@@ -4,6 +4,8 @@ const locateByRSSI = require('../lib/locateByRSSI');
 const {loadBeacons} = require('../lib/json2map');
 const {PathFinding} = require("astarjs");
 const httpwsbridge = require('../lib/httpwsbridge');
+const KalmanFilter = require('kalmanjs')
+const Command = require('../lib/command');
 
 const beacons = new Map();
 loadBeacons('./indoorMap.json').then((data) => {
@@ -17,6 +19,8 @@ loadBeacons('./indoorMap.json').then((data) => {
 });
 
 let globalLocation = {x: -1, y: -1};
+const kf = new KalmanFilter();
+
 
 router.get('/', function(req, res, next) {
     
@@ -31,27 +35,27 @@ router.get('/', function(req, res, next) {
     const beacon2 = beacons.get(mac2);
     const beacon3 = beacons.get(mac3);
     const beacon4 = beacons.get(mac4);
-    const beacon5 = beacons.get(mac5);
+    // const beacon5 = beacons.get(mac5);
 
-    console.log("name1=" + beacon1.name + "&mac1=" + beacon1.mac);
-    console.log("name2=" + beacon2.name + "&mac2=" + beacon2.mac);
-    console.log("name3=" + beacon3.name + "&mac3=" + beacon3.mac);
-    console.log("name4=" + beacon4.name + "&mac4=" + beacon4.mac);
-    console.log("name5=" + beacon3.name + "&mac5=" + beacon3.mac);
+    console.log("name1=" + beacon1.name + "&mac1=" + beacon1.mac + "&rssi1=" + req.query.rssi1);
+    console.log("name2=" + beacon2.name + "&mac2=" + beacon2.mac + "&rssi2=" + req.query.rssi2);
+    console.log("name3=" + beacon3.name + "&mac3=" + beacon3.mac + "&rssi3=" + req.query.rssi3);
+    console.log("name4=" + beacon4.name + "&mac4=" + beacon4.mac + "&rssi4=" + req.query.rssi4);
+    // console.log("name5=" + beacon5.name + "&mac5=" + beacon5.mac);
     // console.log(beacon2);
     // console.log(beacon3);
     let locations = [];
-    let location = locateByRSSI(beacon1, beacon2, beacon3, req.query.rssi1, req.query.rssi2, req.query.rssi3);
+    let location = locateByRSSI(beacon1, beacon2, beacon3, req.query.rssi1,req.query.rssi2, req.query.rssi3);
     locations.push(location);
-    if (beacon4 != undefined && beacon5 != undefined) {
+    if (beacon4 != undefined /*&& beacon5 != undefined*/) {
         let location2 = locateByRSSI(beacon2, beacon3, beacon4, req.query.rssi2, req.query.rssi3, req.query.rssi4);
-        let location3 = locateByRSSI(beacon3, beacon4, beacon5, req.query.rssi3, req.query.rssi4, req.query.rssi5);
+        // let location3 = locateByRSSI(beacon3, beacon4, beacon5, req.query.rssi3, req.query.rssi4, req.query.rssi5);
         if (location2 != undefined) {
             locations.push(location2);
         }
-        if (location3 != undefined) {
-            locations.push(location3);
-        }
+        // if (location3 != undefined) {
+        //     locations.push(location3);
+        // }
     }
 
     let x = 0;
@@ -69,7 +73,7 @@ router.get('/', function(req, res, next) {
     // console.log(location);
     if (location) {
         globalLocation = location;
-        httpwsbridge.sendMsgToWebClients({type: 100, data: [x, y]});
+        httpwsbridge.sendMsgToWebClients({code: Command.POSITION, data: [x, y]});
         res.send({code: 200, msg: 'success', location: location});
 
     } else {
