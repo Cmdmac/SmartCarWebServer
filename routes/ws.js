@@ -1,6 +1,7 @@
 const express = require('express')
 const route = express.Router() // 实例化路由对象
 const Command = require('../lib/command');
+const locatelib = require('../lib/locatelib');
 // const getNowTime = require('./utils/index')
 
 const httpwsbridge = require('../lib/httpwsbridge');
@@ -38,10 +39,16 @@ route.ws('/mobile/hub', (ws, req) => {
     console.log(msg);
     try {
       let o = JSON.parse(msg);
-      switch(o.code) {
-      case Command.DIRECTION:
-        httpwsbridge.sendMsgToWebClients(o);
-        break;
+      switch(o.command) {
+
+        case Command.CMD_REPORT_DIRECTION:
+          httpwsbridge.sendMsgToWebClients({code: o.command, data: o.data});
+          break;
+
+        case Command.CMD_REPORT_LOCATION:
+          locatelib.processLocationFromClient(o.data, ws);
+          break;
+
       }
     } catch(e) {
       console.log(e);
